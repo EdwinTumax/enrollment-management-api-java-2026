@@ -4,6 +4,8 @@ import edu.kalum.enrollmentmanagement.core.dto.EnrollmentRequest;
 import edu.kalum.enrollmentmanagement.core.dto.EnrollmentResponse;
 import edu.kalum.enrollmentmanagement.core.service.EnrollmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ public class EnrollmentController {
     private final EnrollmentService enrollmentService;
 
     @PostMapping
-    public EnrollmentResponse executeEnrollmentStudent(@RequestBody EnrollmentRequest enrollmentRequest) {
-        return enrollmentService.executeProcedure(enrollmentRequest);
+    public ResponseEntity<EnrollmentResponse> executeEnrollmentStudent(@RequestBody EnrollmentRequest enrollmentRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(enrollmentService.executeProcedure(enrollmentRequest));
     }
 }
