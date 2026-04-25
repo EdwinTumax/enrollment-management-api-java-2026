@@ -20,6 +20,11 @@ public class EnrollmentController {
 
     @PostMapping
     public ResponseEntity<EnrollmentResponse> executeEnrollmentStudent(@RequestBody EnrollmentRequest enrollmentRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(enrollmentService.executeProcedure(enrollmentRequest));
+        EnrollmentResponse response = enrollmentService.executeProcedure(enrollmentRequest);
+        if(response.getStatusCode() == 201) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+        }
     }
 }
