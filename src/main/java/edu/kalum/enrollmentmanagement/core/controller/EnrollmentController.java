@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,10 +22,12 @@ public class EnrollmentController {
 
     @PostMapping
     public ResponseEntity<EnrollmentResponse> executeEnrollmentStudent(@RequestBody EnrollmentRequest enrollmentRequest) {
-        EnrollmentResponse response = enrollmentService.executeProcedure(enrollmentRequest);
-        if(response.getStatusCode() == 201) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } else {
+        EnrollmentResponse response = null;
+        try {
+            response = enrollmentService.executeProcedure(enrollmentRequest);
+            return ResponseEntity.status(response.getStatusCode()).body(response);
+        }catch (Exception ex) {
+            response = new EnrollmentResponse(503,"TRANSACTION ERROR","0");
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
         }
     }
